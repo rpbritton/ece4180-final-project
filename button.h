@@ -1,3 +1,5 @@
+#pragma once
+
 #include "mbed.h"
 #include "PinDetect.h"
 #include "activator.h"

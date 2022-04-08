@@ -1,3 +1,5 @@
+#pragma once
+
 #include "mbed.h"
 #include "rtos.h"
 #include "activator.h"
