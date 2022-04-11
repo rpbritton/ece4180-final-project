@@ -4,45 +4,82 @@
 #include "button.h"
 #include "bluetooth.h"
 #include "clapper.h"
+#include "photoresistor.h"
+#include "sonar.h"
 
 int main()
 {
+
     DigitalOut myled1(LED1);
     PinDetect buttonPin(p30);
     Button button(&buttonPin);
     button.start();
 
-    DigitalOut myled2(LED2);
     Serial bluetoothSerial(p28, p27);
     Bluetooth bluetooth(&bluetoothSerial);
     bluetooth.start();
 
-    DigitalOut myled3(LED3);
     AnalogIn clapperPin(p16);
     Clapper clapper(&clapperPin);
     clapper.start();
 
+    AnalogIn lightsensor(p15);
+    Photoresistor lightSense(&lightsensor);
+    lightSense.start();
+
+    DigitalOut trigger(p6);
+    DigitalIn echo(p7);
+    Timer sonar;
+    Sonar sonarSense(&trigger, &echo, &sonar);
+    sonarSense.start();
+
+    bool switchLightPhotoresistor = false;
+    bool switchLightSonar = false;
+    bool switchLightButton = false;
+    bool switchLightBluetooth = false;
+    bool switchLightClapper = false;
+
+    bool curLightState = false;
+
     while (1)
     {
+
         if (button.read())
         {
-            myled1 = 1;
-            wait(0.5);
-            myled1 = 0;
+            switchLightButton = true;
         }
 
         if (bluetooth.read())
         {
-            myled2 = 1;
-            wait(0.5);
-            myled2 = 0;
+            switchLightBluetooth = true;
+        }
+
+        if (lightSense.read())
+        {
+            switchLightPhotoresistor = true;
+        }
+
+        if (sonarSense.read())
+        {
+            switchLightSonar = true;
         }
 
         if (clapper.read())
         {
-            myled3 = 1;
-            wait(0.5);
-            myled3 = 0;
+            switchLightClapper = true;
         }
+
+        // myled1 has been set up to mimic the state of the actual lightswitch for debugging purposes.
+        if (switchLightPhotoresistor || switchLightSonar || switchLightButton || switchLightBluetooth || switchLightClapper)
+        {
+            curLightState = !curLightState;
+            myled1 = curLightState;
+            switchLightSonar = false;
+            switchLightPhotoresistor = false;
+            switchLightButton = false;
+            switchLightBluetooth = false;
+            switchLightClapper = false;
+        }
+        Thread ::wait(1000);
     }
 }
