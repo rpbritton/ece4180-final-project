@@ -3,43 +3,43 @@
 #include "PinDetect.h"
 #include "button.h"
 #include "bluetooth.h"
+#include "clapper.h"
 #include "photoresistor.h"
 #include "sonar.h"
 
-
 int main()
 {
-   
+
     DigitalOut myled1(LED1);
     PinDetect buttonPin(p30);
     Button button(&buttonPin);
     button.start();
 
-
     Serial bluetoothSerial(p28, p27);
     Bluetooth bluetooth(&bluetoothSerial);
     bluetooth.start();
 
-  
+    AnalogIn clapperPin(p16);
+    Clapper clapper(&clapperPin);
+    clapper.start();
+
     AnalogIn lightsensor(p15);
     Photoresistor lightSense(&lightsensor);
     lightSense.start();
-    
+
     DigitalOut trigger(p6);
-    DigitalIn  echo(p7);
+    DigitalIn echo(p7);
     Timer sonar;
     Sonar sonarSense(&trigger, &echo, &sonar);
     sonarSense.start();
-    
-    bool switchLightPhotoresistor=  false;
+
+    bool switchLightPhotoresistor = false;
     bool switchLightSonar = false;
     bool switchLightButton = false;
     bool switchLightBluetooth = false;
-    
-    bool curLightState = false;
-    
+    bool switchLightClapper = false;
 
-    
+    bool curLightState = false;
 
     while (1)
     {
@@ -53,19 +53,24 @@ int main()
         {
             switchLightBluetooth = true;
         }
-        
+
         if (lightSense.read())
         {
             switchLightPhotoresistor = true;
         }
-        
+
         if (sonarSense.read())
         {
             switchLightSonar = true;
         }
-        
-        //myled1 has been set up to mimic the state of the actual lightswitch for debugging purposes.
-        if(switchLightPhotoresistor || switchLightSonar || switchLightButton || switchLightBluetooth)
+
+        if (clapper.read())
+        {
+            switchLightClapper = true;
+        }
+
+        // myled1 has been set up to mimic the state of the actual lightswitch for debugging purposes.
+        if (switchLightPhotoresistor || switchLightSonar || switchLightButton || switchLightBluetooth || switchLightClapper)
         {
             curLightState = !curLightState;
             myled1 = curLightState;
@@ -73,9 +78,8 @@ int main()
             switchLightPhotoresistor = false;
             switchLightButton = false;
             switchLightBluetooth = false;
+            switchLightClapper = false;
         }
-        Thread :: wait(1000);
-      
-        
+        Thread ::wait(1000);
     }
 }
