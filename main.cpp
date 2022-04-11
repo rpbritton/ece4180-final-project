@@ -3,6 +3,7 @@
 #include "PinDetect.h"
 #include "button.h"
 #include "bluetooth.h"
+#include "clapper.h"
 
 int main()
 {
@@ -15,6 +16,11 @@ int main()
     Serial bluetoothSerial(p28, p27);
     Bluetooth bluetooth(&bluetoothSerial);
     bluetooth.start();
+
+    DigitalOut myled3(LED3);
+    AnalogIn clapperPin(p16);
+    Clapper clapper(&clapperPin);
+    clapper.start();
 
     while (1)
     {
@@ -30,6 +36,13 @@ int main()
             myled2 = 1;
             wait(0.5);
             myled2 = 0;
+        }
+
+        if (clapper.read())
+        {
+            myled3 = 1;
+            wait(0.5);
+            myled3 = 0;
         }
     }
 }
