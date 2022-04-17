@@ -6,6 +6,8 @@
 #include "clapper.h"
 #include "photoresistor.h"
 #include "sonar.h"
+#include "speakerOut.h"
+#include "servoOut.h"
 
 int main()
 {
@@ -40,6 +42,12 @@ int main()
     bool switchLightClapper = false;
 
     bool curLightState = false;
+    
+    Servo servo(p21);
+    ServoOut servoOutput(&servo);
+    
+    PwmOut speaker(p26);
+    SpeakerOut speakerOutput(&speaker, 440.0, 0.2);
 
     while (1)
     {
@@ -73,6 +81,8 @@ int main()
         if (switchLightPhotoresistor || switchLightSonar || switchLightButton || switchLightBluetooth || switchLightClapper)
         {
             curLightState = !curLightState;
+            servoOutput.set(true);
+            speakerOutput.set(true);
             myled1 = curLightState;
             switchLightSonar = false;
             switchLightPhotoresistor = false;
