@@ -83,6 +83,13 @@ int main()
     bool activator_states[num_activators];
     for (int index = 0; index < num_activators; index++)
         activator_states[index] = false;
+        
+    // TODO: remove after dipswitch
+    for (int index = 0; index < num_outputs; index++)
+    {
+        outputs[index]->enable(true);
+        lcd.output_enabled(outputs[index], true);
+    }
 
     while (1)
     {
@@ -98,8 +105,11 @@ int main()
         {
             state = !state;
             for (int index = 0; index < num_outputs; index++)
-                outputs[index]->set(state);
+            {
+                outputs[index]->activate(state);
+                lcd.output_active(outputs[index], state);
+            }
         }
-        Thread ::wait(200);
+        Thread::wait(200);
     }
 }

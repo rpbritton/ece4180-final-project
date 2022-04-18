@@ -13,11 +13,10 @@ private:
     float note;
     float duration;
 
-    bool enabled;
+protected:
+    virtual void set(bool state);
 
 public:
-    SpeakerOut(PwmOut *speaker, float note, float duration) : speaker(speaker), note(note), duration(duration), enabled(true) {}
-    virtual void enable(bool enable);
-    virtual void set(bool active);
+    SpeakerOut(PwmOut *speaker, float note, float duration) : speaker(speaker), note(note), duration(duration) {}
     virtual char *description() { return this->name; }
 };

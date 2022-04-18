@@ -10,12 +10,11 @@ private:
     static char *name;
 
     Servo *servo;
-    bool enabled;
-    bool active;
+    
+protected:
+    virtual void set(bool state);
 
 public:
-    ServoOut(Servo *servo) : servo(servo), enabled(true), active(false) {}
-    virtual void enable(bool enable);
-    virtual void set(bool active);
+    ServoOut(Servo *servo) : servo(servo) {}
     virtual char *description() { return this->name; }
 };

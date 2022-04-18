@@ -9,12 +9,11 @@ private:
     static char *name;
 
     DigitalOut *pin;
-    bool enabled;
-    bool active;
+    
+protected:
+    virtual void set(bool active);
 
 public:
-    Led(DigitalOut *pin) : pin(pin), enabled(true), active(true) {}
-    virtual void set(bool active);
-    virtual void enable(bool enable);
+    Led(DigitalOut *pin) : pin(pin) {}
     virtual char *description() { return this->name; }
 };

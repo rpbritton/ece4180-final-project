@@ -2,8 +2,15 @@
 
 class Output
 {
+private:
+    bool activated, enabled;
+    
+protected:
+    virtual void set(bool state) = 0;
+
 public:
-    virtual void set(bool active) = 0;
-    virtual void enable(bool enable) = 0;
+    Output() : activated(false), enabled(false) {};
+    void activate(bool activated);
+    void enable(bool enabled);
     virtual char *description() = 0;
 };
