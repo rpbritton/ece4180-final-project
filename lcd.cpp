@@ -1,13 +1,13 @@
 #include "lcd.h"
 
 #define LCD_FONT_SIZE (8)
+#define LCD_DESCRIPTION_COLUMN (0)
 #define LCD_ACTIVATORS_TITLE ("Activators")
 #define LCD_OUTPUTS_TITLE ("Outputs")
-#define LCD_DESCRIPTION_COLUMN (0)
-#define LCD_ENABLE_TITLE ("Ena")
 #define LCD_ENABLE_COLUMN (11)
-#define LCD_ACTIVATED_TITLE ("Act")
+#define LCD_ENABLE_TITLE ("Ena")
 #define LCD_ACTIVATED_COLUMN (15)
+#define LCD_ACTIVATED_TITLE ("Act")
 
 void Lcd::write_title(char row, char *title)
 {
@@ -38,7 +38,7 @@ void Lcd::write_state(char column, char row, bool state)
 {
     this->lcd->set_font_size(LCD_FONT_SIZE, LCD_FONT_SIZE);
     this->lcd->text_underline(false);
-    this->lcd->locate(column, row);
+    this->lcd->locate(column + 1, row);
     if (state)
         this->lcd->putc('x');
     else
@@ -59,7 +59,7 @@ void Lcd::start(int num_activators, Activator **activators, int num_outputs, Out
         this->write_description(current_row++, activators[index]->description());
 
     current_row += 2;
-    
+
     this->write_title(current_row, LCD_OUTPUTS_TITLE);
     current_row += 2;
     this->outputs_row = current_row;
