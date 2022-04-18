@@ -16,7 +16,7 @@ private:
 
     Mutex lock;
     bool activated;
-    
+
 protected:
     virtual bool read();
 

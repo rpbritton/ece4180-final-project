@@ -8,9 +8,9 @@ bool Activator::state()
 
 void Activator::enable(bool enabled)
 {
-    // clear stale read   
+    // clear stale read
     if (!this->enabled && enabled)
         this->read();
-        
+
     this->enabled = enabled;
 }

@@ -18,7 +18,7 @@ private:
 
     Mutex lock;
     bool activated;
-    
+
     float threshold;
 
     void increment_buffer();
@@ -28,7 +28,7 @@ private:
 
     bool detect(int period);
     void wait(int period);
-    
+
 protected:
     virtual bool read();
 

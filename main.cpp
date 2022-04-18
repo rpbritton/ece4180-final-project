@@ -52,7 +52,7 @@ int main()
 
     DigitalOut outletPin(p8);
     Outlet outlet(&outletPin);
-    
+
     DigitalOut ledPin(LED1);
     Led led(&ledPin);
 
@@ -69,13 +69,13 @@ int main()
     uLCD_4DGL lcdLib(p9, p10, p11);
     Lcd lcd(&lcdLib);
     lcd.start(num_activators, activators, num_outputs, outputs);
-    
+
     //
     // start activators
     //
     for (int index = 0; index < num_activators; index++)
         activators[index]->start();
-    
+
     //
     // monitor activator states
     //
@@ -83,7 +83,7 @@ int main()
     bool activator_states[num_activators];
     for (int index = 0; index < num_activators; index++)
         activator_states[index] = false;
-        
+
     // TODO: remove after dipswitch can automatically enable/disable
     for (int index = 0; index < num_activators; index++)
     {
@@ -105,11 +105,11 @@ int main()
             if (activator_states[index])
                 changed = true;
         }
-        
+
         if (changed)
         {
             state = !state;
-            
+
             //
             // update input activation
             //
@@ -117,7 +117,7 @@ int main()
             {
                 lcd.activator_activate(index, activator_states[index]);
             }
-            
+
             //
             // update output activation
             //
@@ -127,7 +127,7 @@ int main()
                 lcd.output_activate(index, state);
             }
         }
-        
+
         Thread::wait(1000);
     }
 }
