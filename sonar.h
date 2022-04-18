@@ -28,8 +28,8 @@ private:
 
 public:
     Sonar(DigitalOut *trigger, DigitalIn *echo, Timer *sonar) : trigger(trigger), echo(echo), sonar(sonar), active(false), prevReading(false) {}
-    bool read();
-    void enable(bool enable);
-    void start();
+    virtual bool read();
+    virtual void enable(bool enable);
+    virtual void start();
     virtual char *description() { return this->name; }
 };

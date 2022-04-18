@@ -15,7 +15,7 @@ private:
 
 public:
     ServoOut(Servo *servo) : servo(servo), enabled(true), active(false) {}
-    void enable(bool enable);
-    void set(bool active);
+    virtual void enable(bool enable);
+    virtual void set(bool active);
     virtual char *description() { return this->name; }
 };

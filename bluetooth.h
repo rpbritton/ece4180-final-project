@@ -19,8 +19,8 @@ private:
 
 public:
     Bluetooth(Serial *serial) : serial(serial), state(ACTIVATOR_INACTIVE) {}
-    bool read();
-    void enable(bool enable);
-    void start();
+    virtual bool read();
+    virtual void enable(bool enable);
+    virtual void start();
     virtual char *description() { return this->name; }
 };

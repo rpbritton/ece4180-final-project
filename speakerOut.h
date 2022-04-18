@@ -17,7 +17,7 @@ private:
 
 public:
     SpeakerOut(PwmOut *speaker, float note, float duration) : speaker(speaker), note(note), duration(duration), enabled(true) {}
-    void enable(bool enable);
-    void set(bool active);
+    virtual void enable(bool enable);
+    virtual void set(bool active);
     virtual char *description() { return this->name; }
 };

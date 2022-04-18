@@ -9,39 +9,29 @@
 #include "speakerOut.h"
 #include "servoOut.h"
 #include "outlet.h"
+#include "led.h"
 
 int main()
 {
-    DigitalOut myled1(LED1);
+    //
+    // Create activators
+    //
     PinDetect buttonPin(p30);
     Button button(&buttonPin);
-    button.start();
 
     Serial bluetoothSerial(p28, p27);
     Bluetooth bluetooth(&bluetoothSerial);
-    bluetooth.start();
 
     AnalogIn clapperPin(p16);
     Clapper clapper(&clapperPin);
-    clapper.start();
 
     AnalogIn lightsensor(p15);
     Photoresistor lightSense(&lightsensor);
-    lightSense.start();
 
     DigitalOut trigger(p6);
     DigitalIn echo(p7);
     Timer sonar;
     Sonar sonarSense(&trigger, &echo, &sonar);
-    sonarSense.start();
-
-    bool switchLightPhotoresistor = false;
-    bool switchLightSonar = false;
-    bool switchLightButton = false;
-    bool switchLightBluetooth = false;
-    bool switchLightClapper = false;
-
-    bool curLightState = false;
 
     Activator *activators[] = {
         &button,
@@ -51,6 +41,9 @@ int main()
         &sonarSense};
     int num_activators = sizeof(activators) / sizeof(activators[0]);
 
+    //
+    // Create outputs
+    //
     Servo servo(p21);
     ServoOut servoOutput(&servo);
 
@@ -59,58 +52,54 @@ int main()
 
     DigitalOut outletPin(p8);
     Outlet outlet(&outletPin);
+    
+    DigitalOut ledPin(LED1);
+    Led led(&ledPin);
 
     Output *outputs[] = {
         &servoOutput,
         &speakerOutput,
-        &outlet};
+        &outlet,
+        &led};
     int num_outputs = sizeof(outputs) / sizeof(outputs[0]);
 
+    //
+    // Create LCD
+    //
     uLCD_4DGL lcdLib(p9, p10, p11);
     Lcd lcd(&lcdLib, activators, num_activators, outputs, num_outputs);
     lcd.start();
+    
+    //
+    // Start activators
+    //
+    for (int index = 0; index < num_activators; index++)
+        activators[index]->start();
+    
+    //
+    // Monitor activator states
+    //
+    bool state = false;
+    bool activator_states[num_activators];
+    for (int index = 0; index < num_activators; index++)
+        activator_states[index] = false;
 
     while (1)
     {
-        if (button.read())
+        bool changed = false;
+        for (int index = 0; index < num_activators; index++)
         {
-            switchLightButton = true;
+            activator_states[index] = activators[index]->read();
+            if (activator_states[index])
+                changed = true;
         }
-
-        if (bluetooth.read())
+        
+        if (changed)
         {
-            switchLightBluetooth = true;
+            state = !state;
+            for (int index = 0; index < num_outputs; index++)
+                outputs[index]->set(state);
         }
-
-        if (lightSense.read())
-        {
-            switchLightPhotoresistor = true;
-        }
-
-        if (sonarSense.read())
-        {
-            switchLightSonar = true;
-        }
-
-        if (clapper.read())
-        {
-            switchLightClapper = true;
-        }
-
-        // myled1 has been set up to mimic the state of the actual lightswitch for debugging purposes.
-        if (switchLightPhotoresistor || switchLightSonar || switchLightButton || switchLightBluetooth || switchLightClapper)
-        {
-            curLightState = !curLightState;
-            servoOutput.set(true);
-            speakerOutput.set(true);
-            myled1 = curLightState;
-            outlet.set(curLightState);
-            switchLightSonar = false;
-            switchLightPhotoresistor = false;
-            switchLightButton = false;
-            switchLightBluetooth = false;
-            switchLightClapper = false;
-        }
-        Thread ::wait(1000);
+        Thread ::wait(200);
     }
 }

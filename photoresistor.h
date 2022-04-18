@@ -23,8 +23,8 @@ private:
 
 public:
     Photoresistor(AnalogIn *sensor) : sensor(sensor), active(false), prevReading(false) {}
-    bool read();
-    void enable(bool enable);
-    void start();
+    virtual bool read();
+    virtual void enable(bool enable);
+    virtual void start();
     virtual char *description() { return this->name; }
 };

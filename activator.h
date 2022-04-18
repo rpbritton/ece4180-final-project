@@ -10,8 +10,8 @@ typedef enum
 class Activator
 {
 public:
-    bool read();
-    void enable(bool enable);
-    void start();
+    virtual bool read() = 0;
+    virtual void enable(bool enable) = 0;
+    virtual void start() = 0;
     virtual char *description() = 0;
 };

@@ -3,7 +3,7 @@
 #include "mbed.h"
 #include "output.h"
 
-class Outlet : public Output
+class Led : public Output
 {
 private:
     static char *name;
@@ -13,7 +13,7 @@ private:
     bool active;
 
 public:
-    Outlet(DigitalOut *pin) : pin(pin), enabled(true), active(true) {}
+    Led(DigitalOut *pin) : pin(pin), enabled(true), active(true) {}
     virtual void set(bool active);
     virtual void enable(bool enable);
     virtual char *description() { return this->name; }

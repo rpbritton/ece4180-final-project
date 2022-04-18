@@ -29,8 +29,8 @@ private:
 
 public:
     Clapper(AnalogIn *pin) : pin(pin), state(ACTIVATOR_INACTIVE), current_index(0), next_index(0) {}
-    bool read();
-    void enable(bool enable);
-    void start();
+    virtual bool read();
+    virtual void enable(bool enable);
+    virtual void start();
     virtual char *description() { return this->name; }
 };
