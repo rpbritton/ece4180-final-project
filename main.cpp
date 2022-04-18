@@ -1,6 +1,6 @@
 #include "mbed.h"
 #include "rtos.h"
-#include "PinDetect.h"
+#include "lcd.h"
 #include "button.h"
 #include "bluetooth.h"
 #include "clapper.h"
@@ -12,7 +12,6 @@
 
 int main()
 {
-
     DigitalOut myled1(LED1);
     PinDetect buttonPin(p30);
     Button button(&buttonPin);
@@ -52,6 +51,18 @@ int main()
 
     DigitalOut outletPin(p8);
     Outlet outlet(&outletPin);
+
+    Activator *activators[] = {
+        &button,
+        &bluetooth,
+        &clapper,
+        &lightSense,
+        &sonarSense};
+    int num_activators = sizeof(activators) / sizeof(activators[0]);
+
+    uLCD_4DGL lcdLib(p9, p10, p11);
+    Lcd lcd(&lcdLib, activators, num_activators, NULL, 0);
+    lcd.start();
 
     while (1)
     {

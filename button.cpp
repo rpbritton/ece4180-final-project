@@ -39,3 +39,5 @@ void Button::pressed_callback() void Button::start()
     this->pin->attach_deasserted(this, &Button::callback);
     this->pin->setSampleFrequency();
 }
+
+char *Button::name = "Button";
