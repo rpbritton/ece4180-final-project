@@ -9,13 +9,13 @@
 class Clapper : public Activator
 {
 private:
+    static char *name;
+
     AnalogIn *pin;
 
     Thread thread;
     void thread_func();
 
-    Mutex active_lock;
-    bool active;
     Mutex lock;
     ActivatorState state;
 
@@ -27,17 +27,8 @@ private:
     bool detect(int period);
     void wait(int period);
 
-    static char *name;
-
 public:
-    Clapper(AnalogIn *pin) : pin(pin), active(false), current_index(0), next_index(0)
-                                                                            Clapper(AnalogIn * pin) : pin(pin), state(ACTIVATOR_INACTIVE), current_index(0), next_index(0)
-    {
-        for (int index = 0; index < CLAPPER_BUFFER_LENGTH; index++)
-        {
-            buffer[index] = this->pin->read();
-        }
-    }
+    Clapper(AnalogIn *pin) : pin(pin), state(ACTIVATOR_INACTIVE), current_index(0), next_index(0) {}
     bool read();
     void enable(bool enable);
     void start();

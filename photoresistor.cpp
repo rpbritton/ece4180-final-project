@@ -1,5 +1,7 @@
 #include "photoresistor.h"
 
+char *Photoresistor::name = "Sunlight";
+
 void Photoresistor::thread_func()
 {
     float sensorReading;
@@ -75,5 +77,3 @@ void Photoresistor::start()
     this->thread.start(callback(this, &Photoresistor::thread_func));
     return;
 }
-
-char *Photoresistor::name = "Sunlight";

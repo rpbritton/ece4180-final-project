@@ -1,25 +1,26 @@
 #include "servoOut.h"
+
+char *ServoOut::name = "Servo";
+
 void ServoOut::enable(bool enable)
 {
+    // deactivate if disabled
+    if (!enable && this->active)
+    {
+        this->set(false);
+        this->active = true;
+    }
     this->enabled = enable;
 }
 
-bool ServoOut::set(bool active)
+void ServoOut::set(bool active)
 {
-    if(this->enabled)
+    this->active = active;
+    if (this->enabled)
     {
-        //if light is on, turn it off
-        if(currentVal)
-        {
-            *(this->servo) = 1.0; 
-            currentVal = false;
-        }
-        //if light is off, turn it on
+        if (this->active)
+            *this->servo = 0;
         else
-        {
-            *(this->servo) = 0.0;
-            currentVal = true;
-        }
+            *this->servo = 1;
     }
-    return true;
 }

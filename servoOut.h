@@ -3,17 +3,19 @@
 #include "mbed.h"
 #include "output.h"
 #include "Servo.h"
-class ServoOut : Output
+
+class ServoOut : public Output
 {
 private:
-    Servo *servo;
+    static char *name;
 
+    Servo *servo;
     bool enabled;
-    
-    bool currentVal;
+    bool active;
 
 public:
-    ServoOut(Servo *servo) : servo(servo), enabled(true), currentVal(false) {}
+    ServoOut(Servo *servo) : servo(servo), enabled(true), active(false) {}
     void enable(bool enable);
-    bool set(bool active);
+    void set(bool active);
+    virtual char *description() { return this->name; }
 };

@@ -1,6 +1,8 @@
 #include "outlet.h"
 
-bool Outlet::set(bool active)
+char *Outlet::name = "Outlet";
+
+void Outlet::set(bool active)
 {
     this->active = active;
     if (this->enabled)
@@ -10,12 +12,15 @@ bool Outlet::set(bool active)
         else
             *this->pin = 0;
     }
-    return this->active;
 }
 
 void Outlet::enable(bool enable)
 {
-    this->enabled = enable;
-    if (!this->enabled)
+    // deactivate if disabled
+    if (!enable && this->active)
+    {
         this->set(false);
+        this->active = true;
+    }
+    this->enabled = enable;
 }

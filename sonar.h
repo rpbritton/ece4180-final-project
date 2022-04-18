@@ -7,6 +7,8 @@
 class Sonar : public Activator
 {
 private:
+    static char *name;
+
     DigitalOut *trigger;
     DigitalIn *echo;
 
@@ -23,8 +25,6 @@ private:
     bool prevReading;
 
     int correction;
-
-    static char *name;
 
 public:
     Sonar(DigitalOut *trigger, DigitalIn *echo, Timer *sonar) : trigger(trigger), echo(echo), sonar(sonar), active(false), prevReading(false) {}

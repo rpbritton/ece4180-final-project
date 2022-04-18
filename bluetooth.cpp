@@ -1,5 +1,7 @@
 #include "bluetooth.h"
 
+char *Bluetooth::name = "Bluetooth";
+
 void Bluetooth::thread_func()
 {
     while (1)
@@ -19,9 +21,6 @@ void Bluetooth::thread_func()
                         case '1':
                             if (hit == '1')
                             {
-                                this->active_lock.lock();
-                                this->active = true;
-                                this->active_lock.unlock();
                                 this->lock.lock();
                                 if (this->state == ACTIVATOR_INACTIVE)
                                     this->state = ACTIVATOR_ACTIVE;
@@ -41,10 +40,6 @@ void Bluetooth::thread_func()
 
 bool Bluetooth::read()
 {
-    this->active_lock.lock();
-    bool active = this->active;
-    this->active = false;
-    this->active_lock.unlock();
     this->lock.lock();
     bool active = false;
     if (this->state == ACTIVATOR_ACTIVE)
@@ -70,5 +65,3 @@ void Bluetooth::start()
 {
     this->thread.start(callback(this, &Bluetooth::thread_func));
 }
-
-char *Bluetooth::name = "Bluetooth";

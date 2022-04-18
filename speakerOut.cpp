@@ -1,18 +1,19 @@
 #include "speakerOut.h"
 
+char *SpeakerOut::name = "Speaker";
+
 void SpeakerOut::enable(bool enable)
 {
     this->enabled = enable;
 }
 
-bool SpeakerOut::set(bool active)
+void SpeakerOut::set(bool active)
 {
-    if(this->enabled)
+    if (this->enabled)
     {
-        this->speaker->period(1.0/this->note);
-        *(this->speaker) = 0.5;
+        this->speaker->period(1.0 / this->note);
+        *this->speaker = 0.5;
         wait(this->duration);
-        *(this->speaker) =0.0;
+        *this->speaker = 0.0;
     }
-    return true;
 }

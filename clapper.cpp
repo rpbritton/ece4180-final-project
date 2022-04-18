@@ -2,6 +2,8 @@
 
 #define CLAPPER_THRESHOLD (0.005)
 
+char *Clapper::name = "Clapper";
+
 void Clapper::increment_buffer()
 {
     Thread::wait(1);
@@ -41,9 +43,6 @@ void Clapper::thread_func()
         if (!this->detect(250))
             continue;
 
-        this->active_lock.lock();
-        this->active = true;
-        this->active_lock.unlock();
         this->lock.lock();
         if (this->state == ACTIVATOR_INACTIVE)
             this->state = ACTIVATOR_ACTIVE;
@@ -55,10 +54,6 @@ void Clapper::thread_func()
 
 bool Clapper::read()
 {
-    this->active_lock.lock();
-    bool active = this->active;
-    this->active = false;
-    this->active_lock.unlock();
     this->lock.lock();
     bool active = false;
     if (this->state == ACTIVATOR_ACTIVE)
@@ -82,7 +77,9 @@ void Clapper::enable(bool enable)
 
 void Clapper::start()
 {
+    // init buffer
+    for (int index = 0; index < CLAPPER_BUFFER_LENGTH; index++)
+        buffer[index] = this->pin->read();
+
     this->thread.start(callback(this, &Clapper::thread_func));
 }
-
-char *Clapper::name = "Clapper";

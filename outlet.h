@@ -5,15 +5,18 @@
 
 #define CLAPPER_BUFFER_LENGTH (10)
 
-class Outlet : Output
+class Outlet : public Output
 {
 private:
+    static char *name;
+
     DigitalOut *pin;
     bool enabled;
     bool active;
 
 public:
-    Outlet(DigitalOut *pin) : pin(pin), active(false), enabled(true) {}
-    bool set(bool active);
+    Outlet(DigitalOut *pin) : pin(pin), enabled(true), active(true) {}
+    void set(bool active);
     void enable(bool enable);
+    virtual char *description() { return this->name; }
 };

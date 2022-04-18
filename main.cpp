@@ -43,6 +43,14 @@ int main()
 
     bool curLightState = false;
 
+    Activator *activators[] = {
+        &button,
+        &bluetooth,
+        &clapper,
+        &lightSense,
+        &sonarSense};
+    int num_activators = sizeof(activators) / sizeof(activators[0]);
+
     Servo servo(p21);
     ServoOut servoOutput(&servo);
 
@@ -52,21 +60,18 @@ int main()
     DigitalOut outletPin(p8);
     Outlet outlet(&outletPin);
 
-    Activator *activators[] = {
-        &button,
-        &bluetooth,
-        &clapper,
-        &lightSense,
-        &sonarSense};
-    int num_activators = sizeof(activators) / sizeof(activators[0]);
+    Output *outputs[] = {
+        &servoOutput,
+        &speakerOutput,
+        &outlet};
+    int num_outputs = sizeof(outputs) / sizeof(outputs[0]);
 
     uLCD_4DGL lcdLib(p9, p10, p11);
-    Lcd lcd(&lcdLib, activators, num_activators, NULL, 0);
+    Lcd lcd(&lcdLib, activators, num_activators, outputs, num_outputs);
     lcd.start();
 
     while (1)
     {
-
         if (button.read())
         {
             switchLightButton = true;

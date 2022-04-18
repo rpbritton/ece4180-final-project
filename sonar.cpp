@@ -1,5 +1,7 @@
 #include "sonar.h"
 
+char *Sonar::name = "Doorway";
+
 void Sonar::thread_func()
 {
     this->sonar->reset();
@@ -106,5 +108,3 @@ void Sonar::start()
     this->thread.start(callback(this, &Sonar::thread_func));
     return;
 }
-
-char *Sonar::name = "Doorway";

@@ -7,6 +7,8 @@
 class Photoresistor : public Activator
 {
 private:
+    static char *name;
+
     AnalogIn *sensor;
 
     Thread thread;
@@ -18,8 +20,6 @@ private:
     bool prevReading;
 
     bool enabled;
-
-    static char *name;
 
 public:
     Photoresistor(AnalogIn *sensor) : sensor(sensor), active(false), prevReading(false) {}
