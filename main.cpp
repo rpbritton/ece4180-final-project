@@ -23,7 +23,7 @@ int main()
     Bluetooth bluetooth(&bluetoothSerial);
 
     AnalogIn clapperPin(p16);
-    Clapper clapper(&clapperPin);
+    Clapper clapper(&clapperPin, 0.01);
 
     AnalogIn lightsensor(p15);
     Photoresistor lightSense(&lightsensor);

@@ -1,7 +1,5 @@
 #include "clapper.h"
 
-#define CLAPPER_THRESHOLD (0.007)
-
 char *Clapper::name = "Clapper";
 
 void Clapper::increment_buffer()
@@ -17,7 +15,7 @@ bool Clapper::detect(int period)
     for (int count = 0; count < period; count++)
     {
         this->increment_buffer();
-        if (this->buffer[this->current_index] * (1 - CLAPPER_THRESHOLD) > this->buffer[this->next_index])
+        if (this->buffer[this->current_index] * (1 - this->threshold) > this->buffer[this->next_index])
         {
             return true;
         }
