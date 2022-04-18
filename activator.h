@@ -1,17 +1,17 @@
 #pragma once
 
-typedef enum
-{
-    ACTIVATOR_DISABLED,
-    ACTIVATOR_INACTIVE,
-    ACTIVATOR_ACTIVE
-} ActivatorState;
-
 class Activator
 {
-public:
+private:
+    bool enabled;
+    
+protected:
     virtual bool read() = 0;
-    virtual void enable(bool enable) = 0;
+
+public:
+    Activator() : enabled(false) {};
     virtual void start() = 0;
+    bool state();
+    void enable(bool enabled);
     virtual char *description() = 0;
 };

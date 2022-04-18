@@ -17,19 +17,18 @@ private:
     Thread thread;
     void thread_func();
 
-    Mutex active_lock;
-    bool active;
-
-    bool enabled;
+    Mutex lock;
+    bool activated;
 
     bool prevReading;
 
     int correction;
+    
+protected:
+    virtual bool read();
 
 public:
-    Sonar(DigitalOut *trigger, DigitalIn *echo, Timer *sonar) : trigger(trigger), echo(echo), sonar(sonar), active(false), prevReading(false) {}
-    virtual bool read();
-    virtual void enable(bool enable);
+    Sonar(DigitalOut *trigger, DigitalIn *echo, Timer *sonar) : trigger(trigger), echo(echo), sonar(sonar), activated(false), prevReading(false) {}
     virtual void start();
     virtual char *description() { return this->name; }
 };

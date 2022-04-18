@@ -1,6 +1,6 @@
 #include "clapper.h"
 
-#define CLAPPER_THRESHOLD (0.005)
+#define CLAPPER_THRESHOLD (0.007)
 
 char *Clapper::name = "Clapper";
 
@@ -44,8 +44,7 @@ void Clapper::thread_func()
             continue;
 
         this->lock.lock();
-        if (this->state == ACTIVATOR_INACTIVE)
-            this->state = ACTIVATOR_ACTIVE;
+        this->activated = true;
         this->lock.unlock();
 
         this->wait(50);
@@ -55,24 +54,10 @@ void Clapper::thread_func()
 bool Clapper::read()
 {
     this->lock.lock();
-    bool active = false;
-    if (this->state == ACTIVATOR_ACTIVE)
-    {
-        this->state = ACTIVATOR_INACTIVE;
-        active = true;
-    }
+    bool activated = this->activated;
+    this->activated = false;
     this->lock.unlock();
-    return active;
-}
-
-void Clapper::enable(bool enable)
-{
-    this->lock.lock();
-    if (enable && this->state == ACTIVATOR_DISABLED)
-        this->state = ACTIVATOR_INACTIVE;
-    else
-        this->state = ACTIVATOR_DISABLED;
-    this->lock.unlock();
+    return activated;
 }
 
 void Clapper::start()

@@ -4,29 +4,14 @@ char *Button::name = "Button";
 
 void Button::callback()
 {
-    if (this->state == ACTIVATOR_INACTIVE)
-        this->state = ACTIVATOR_ACTIVE;
+    this->activated = true;
 }
 
 bool Button::read()
 {
-    if (this->state == ACTIVATOR_ACTIVE)
-    {
-        this->state = ACTIVATOR_INACTIVE;
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
-
-void Button::enable(bool enable)
-{
-    if (enable && this->state == ACTIVATOR_DISABLED)
-        this->state = ACTIVATOR_INACTIVE;
-    else
-        this->state = ACTIVATOR_DISABLED;
+    bool activated = this->activated;
+    this->activated = false;
+    return activated;
 }
 
 void Button::start()

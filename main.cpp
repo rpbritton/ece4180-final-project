@@ -14,7 +14,7 @@
 int main()
 {
     //
-    // Create activators
+    // create activators
     //
     PinDetect buttonPin(p30);
     Button button(&buttonPin);
@@ -42,7 +42,7 @@ int main()
     int num_activators = sizeof(activators) / sizeof(activators[0]);
 
     //
-    // Create outputs
+    // create outputs
     //
     Servo servo(p21);
     ServoOut servoOutput(&servo);
@@ -64,20 +64,20 @@ int main()
     int num_outputs = sizeof(outputs) / sizeof(outputs[0]);
 
     //
-    // Create LCD
+    // create LCD
     //
     uLCD_4DGL lcdLib(p9, p10, p11);
     Lcd lcd(&lcdLib, activators, num_activators, outputs, num_outputs);
     lcd.start();
     
     //
-    // Start activators
+    // start activators
     //
     for (int index = 0; index < num_activators; index++)
         activators[index]->start();
     
     //
-    // Monitor activator states
+    // monitor activator states
     //
     bool state = false;
     bool activator_states[num_activators];
@@ -85,6 +85,11 @@ int main()
         activator_states[index] = false;
         
     // TODO: remove after dipswitch
+    for (int index = 0; index < num_activators; index++)
+    {
+        activators[index]->enable(true);
+        lcd.activator_enabled(activators[index], true);
+    }
     for (int index = 0; index < num_outputs; index++)
     {
         outputs[index]->enable(true);
@@ -96,7 +101,7 @@ int main()
         bool changed = false;
         for (int index = 0; index < num_activators; index++)
         {
-            activator_states[index] = activators[index]->read();
+            activator_states[index] = activators[index]->state();
             if (activator_states[index])
                 changed = true;
         }
@@ -104,6 +109,18 @@ int main()
         if (changed)
         {
             state = !state;
+            
+            //
+            // update input activation
+            //
+            for (int index = 0; index < num_activators; index++)
+            {
+                lcd.activator_active(activators[index], activator_states[index]);
+            }
+            
+            //
+            // update output activation
+            //
             for (int index = 0; index < num_outputs; index++)
             {
                 outputs[index]->activate(state);

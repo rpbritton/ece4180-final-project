@@ -22,8 +22,7 @@ void Bluetooth::thread_func()
                             if (hit == '1')
                             {
                                 this->lock.lock();
-                                if (this->state == ACTIVATOR_INACTIVE)
-                                    this->state = ACTIVATOR_ACTIVE;
+                                this->activated = true;
                                 this->lock.unlock();
                             }
                             break;
@@ -41,24 +40,10 @@ void Bluetooth::thread_func()
 bool Bluetooth::read()
 {
     this->lock.lock();
-    bool active = false;
-    if (this->state == ACTIVATOR_ACTIVE)
-    {
-        this->state = ACTIVATOR_INACTIVE;
-        active = true;
-    }
+    bool activated = this->activated;
+    this->activated = false;
     this->lock.unlock();
-    return active;
-}
-
-void Bluetooth::enable(bool enable)
-{
-    this->lock.lock();
-    if (enable && this->state == ACTIVATOR_DISABLED)
-        this->state = ACTIVATOR_INACTIVE;
-    else
-        this->state = ACTIVATOR_DISABLED;
-    this->lock.unlock();
+    return activated;
 }
 
 void Bluetooth::start()

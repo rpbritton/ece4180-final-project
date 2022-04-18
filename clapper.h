@@ -17,7 +17,7 @@ private:
     void thread_func();
 
     Mutex lock;
-    ActivatorState state;
+    bool activated;
 
     void increment_buffer();
     float buffer[CLAPPER_BUFFER_LENGTH];
@@ -26,11 +26,12 @@ private:
 
     bool detect(int period);
     void wait(int period);
+    
+protected:
+    virtual bool read();
 
 public:
-    Clapper(AnalogIn *pin) : pin(pin), state(ACTIVATOR_INACTIVE), current_index(0), next_index(0) {}
-    virtual bool read();
-    virtual void enable(bool enable);
+    Clapper(AnalogIn *pin) : pin(pin), activated(false), current_index(0), next_index(0) {}
     virtual void start();
     virtual char *description() { return this->name; }
 };

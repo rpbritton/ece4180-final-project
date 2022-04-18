@@ -15,12 +15,13 @@ private:
     void thread_func();
 
     Mutex lock;
-    ActivatorState state;
+    bool activated;
+    
+protected:
+    virtual bool read();
 
 public:
-    Bluetooth(Serial *serial) : serial(serial), state(ACTIVATOR_INACTIVE) {}
-    virtual bool read();
-    virtual void enable(bool enable);
+    Bluetooth(Serial *serial) : serial(serial), activated(false) {}
     virtual void start();
     virtual char *description() { return this->name; }
 };

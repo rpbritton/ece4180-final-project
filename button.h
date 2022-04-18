@@ -10,13 +10,14 @@ private:
     static char *name;
 
     PinDetect *pin;
-    volatile ActivatorState state;
+    volatile bool activated;
     void callback();
 
-public:
-    Button(PinDetect *button) : pin(button), state(ACTIVATOR_INACTIVE) {}
+protected:
     virtual bool read();
-    virtual void enable(bool enable);
+
+public:
+    Button(PinDetect *button) : pin(button), activated(false) {}
     virtual void start();
     virtual char *description() { return this->name; }
 };
