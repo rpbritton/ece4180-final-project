@@ -16,6 +16,8 @@ private:
 
     Mutex active_lock;
     bool active;
+    Mutex lock;
+    ActivatorState state;
 
     void increment_buffer();
     float buffer[CLAPPER_BUFFER_LENGTH];
@@ -27,6 +29,7 @@ private:
 
 public:
     Clapper(AnalogIn *pin) : pin(pin), active(false), current_index(0), next_index(0)
+                                                                            Clapper(AnalogIn * pin) : pin(pin), state(ACTIVATOR_INACTIVE), current_index(0), next_index(0)
     {
         for (int index = 0; index < CLAPPER_BUFFER_LENGTH; index++)
         {
