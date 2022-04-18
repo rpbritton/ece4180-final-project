@@ -70,3 +70,5 @@ void Bluetooth::start()
 {
     this->thread.start(callback(this, &Bluetooth::thread_func));
 }
+
+char *Bluetooth::name = "Bluetooth";

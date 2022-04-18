@@ -4,7 +4,7 @@
 #include "rtos.h"
 #include "activator.h"
 
-class Bluetooth : Activator
+class Bluetooth : public Activator
 {
 private:
     Serial *serial;
@@ -17,10 +17,13 @@ private:
     Mutex lock;
     ActivatorState state;
 
+    static char *name;
+
 public:
     Bluetooth(Serial *serial) : serial(serial), active(false) {}
     Bluetooth(Serial *serial) : serial(serial), state(ACTIVATOR_INACTIVE) {}
     bool read();
     void enable(bool enable);
     void start();
+    virtual char *description() { return this->name; }
 };

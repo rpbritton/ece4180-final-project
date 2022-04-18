@@ -13,4 +13,5 @@ public:
     bool read();
     void enable(bool enable);
     void start();
+    virtual char *description() = 0;
 };

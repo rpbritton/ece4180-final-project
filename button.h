@@ -4,7 +4,7 @@
 #include "PinDetect.h"
 #include "activator.h"
 
-class Button : Activator
+class Button : public Activator
 {
 private:
     PinDetect *buttonPin;
@@ -14,10 +14,13 @@ private:
     volatile ActivatorState state;
     void callback();
 
+    static char *name;
+
 public:
     Button(PinDetect *button) : buttonPin(button), active(false) {}
     Button(PinDetect *button) : pin(button), state(ACTIVATOR_INACTIVE) {}
     bool read();
     void enable(bool enable);
     void start();
+    virtual char *description() { return this->name; }
 };

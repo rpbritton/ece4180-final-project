@@ -4,7 +4,7 @@
 #include "rtos.h"
 #include "activator.h"
 
-class Photoresistor : Activator
+class Photoresistor : public Activator
 {
 private:
     AnalogIn *sensor;
@@ -19,9 +19,12 @@ private:
 
     bool enabled;
 
+    static char *name;
+
 public:
     Photoresistor(AnalogIn *sensor) : sensor(sensor), active(false), prevReading(false) {}
     bool read();
     void enable(bool enable);
     void start();
+    virtual char *description() { return this->name; }
 };

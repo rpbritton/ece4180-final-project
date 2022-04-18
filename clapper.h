@@ -6,7 +6,7 @@
 
 #define CLAPPER_BUFFER_LENGTH (10)
 
-class Clapper : Activator
+class Clapper : public Activator
 {
 private:
     AnalogIn *pin;
@@ -27,6 +27,8 @@ private:
     bool detect(int period);
     void wait(int period);
 
+    static char *name;
+
 public:
     Clapper(AnalogIn *pin) : pin(pin), active(false), current_index(0), next_index(0)
                                                                             Clapper(AnalogIn * pin) : pin(pin), state(ACTIVATOR_INACTIVE), current_index(0), next_index(0)
@@ -39,4 +41,5 @@ public:
     bool read();
     void enable(bool enable);
     void start();
+    virtual char *description() { return this->name; }
 };

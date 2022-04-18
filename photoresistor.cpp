@@ -3,21 +3,21 @@
 void Photoresistor::thread_func()
 {
     float sensorReading;
-    while(1)
+    while (1)
     {
         this->active_lock.lock();
         bool isEnabled = this->enabled;
         this->active_lock.unlock();
-        //if this peripheral is enabled, check it.
-        if(isEnabled)
+        // if this peripheral is enabled, check it.
+        if (isEnabled)
         {
             sensorReading = *(this->sensor);
-            
-            //If light is currently on, check if it needs to be turned off
-            if(this->prevReading)
+
+            // If light is currently on, check if it needs to be turned off
+            if (this->prevReading)
             {
-                //sensor reading below threshold, send signal to turn off light
-                if(sensorReading > 0.60)
+                // sensor reading below threshold, send signal to turn off light
+                if (sensorReading > 0.60)
                 {
                     this->active_lock.lock();
                     this->active = true;
@@ -26,16 +26,14 @@ void Photoresistor::thread_func()
                 }
                 else
                 {
-                    //sensor reading above threshold, leave light on
+                    // sensor reading above threshold, leave light on
                     this->prevReading = true;
                 }
-                
-                
             }
             else
             {
-                //sensor reading above threshold, send signal to turn on light
-                if(sensorReading < 0.40)
+                // sensor reading above threshold, send signal to turn on light
+                if (sensorReading < 0.40)
                 {
                     this->active_lock.lock();
                     this->active = true;
@@ -44,14 +42,13 @@ void Photoresistor::thread_func()
                 }
                 else
                 {
-                    //sensor reading above threshold, leave light off
+                    // sensor reading above threshold, leave light off
                     this->prevReading = false;
                 }
             }
         }
-        Thread :: wait(500);
+        Thread ::wait(500);
     }
-
 }
 
 bool Photoresistor::read()
@@ -79,4 +76,4 @@ void Photoresistor::start()
     return;
 }
 
-
+char *Photoresistor::name = "Sunlight";

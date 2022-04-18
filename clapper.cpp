@@ -84,3 +84,5 @@ void Clapper::start()
 {
     this->thread.start(callback(this, &Clapper::thread_func));
 }
+
+char *Clapper::name = "Clapper";
