@@ -8,6 +8,7 @@
 #include "sonar.h"
 #include "speakerOut.h"
 #include "servoOut.h"
+#include "outlet.h"
 
 int main()
 {
@@ -42,12 +43,15 @@ int main()
     bool switchLightClapper = false;
 
     bool curLightState = false;
-    
+
     Servo servo(p21);
     ServoOut servoOutput(&servo);
-    
+
     PwmOut speaker(p26);
     SpeakerOut speakerOutput(&speaker, 440.0, 0.2);
+
+    DigitalOut outletPin(p8);
+    Outlet outlet(&outletPin);
 
     while (1)
     {
@@ -84,6 +88,7 @@ int main()
             servoOutput.set(true);
             speakerOutput.set(true);
             myled1 = curLightState;
+            outlet.set(curLightState);
             switchLightSonar = false;
             switchLightPhotoresistor = false;
             switchLightButton = false;
