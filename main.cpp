@@ -67,8 +67,8 @@ int main()
     // create LCD
     //
     uLCD_4DGL lcdLib(p9, p10, p11);
-    Lcd lcd(&lcdLib, activators, num_activators, outputs, num_outputs);
-    lcd.start();
+    Lcd lcd(&lcdLib);
+    lcd.start(num_activators, activators, num_outputs, outputs);
     
     //
     // start activators
@@ -84,16 +84,16 @@ int main()
     for (int index = 0; index < num_activators; index++)
         activator_states[index] = false;
         
-    // TODO: remove after dipswitch
+    // TODO: remove after dipswitch can automatically enable/disable
     for (int index = 0; index < num_activators; index++)
     {
         activators[index]->enable(true);
-        lcd.activator_enabled(activators[index], true);
+        lcd.activator_enable(index, true);
     }
     for (int index = 0; index < num_outputs; index++)
     {
         outputs[index]->enable(true);
-        lcd.output_enabled(outputs[index], true);
+        lcd.output_enable(index, true);
     }
 
     while (1)
@@ -115,7 +115,7 @@ int main()
             //
             for (int index = 0; index < num_activators; index++)
             {
-                lcd.activator_active(activators[index], activator_states[index]);
+                lcd.activator_activate(index, activator_states[index]);
             }
             
             //
@@ -124,9 +124,10 @@ int main()
             for (int index = 0; index < num_outputs; index++)
             {
                 outputs[index]->activate(state);
-                lcd.output_active(outputs[index], state);
+                lcd.output_activate(index, state);
             }
         }
-        Thread::wait(200);
+        
+        Thread::wait(1000);
     }
 }

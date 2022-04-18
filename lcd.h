@@ -10,25 +10,18 @@ class Lcd
 private:
     uLCD_4DGL *lcd;
 
-    Activator **activators;
-    int num_activators;
-
-    Output **outputs;
-    int num_outputs;
-
-    void write_title(int row, char *description);
-    void write_description(int row, char *description);
-    void write_state(int column, int row, bool state);
-    void write_activator_state(Activator *activator, int column, bool state);
-    void write_output_state(Output *output, int column, bool state);
-    int activator_start_row;
-    int output_start_row;
+    void write_title(char row, char *title);
+    void write_description(char row, char *description);
+    void write_state(char column, char row, bool state);
+    
+    char activators_row;
+    char outputs_row;
 
 public:
-    Lcd(uLCD_4DGL *lcdLib, Activator **activators, int num_activators, Output **outputs, int num_outputs) : lcd(lcdLib), activators(activators), num_activators(num_activators), outputs(outputs), num_outputs(num_outputs){};
-    void start();
-    void activator_enabled(Activator *activator, bool enabled);
-    void activator_active(Activator *activator, bool active);
-    void output_enabled(Output *output, bool enabled);
-    void output_active(Output *output, bool active);
+    Lcd(uLCD_4DGL *lcdLib) : lcd(lcdLib) {};
+    void start(int num_activators, Activator **activators, int num_outputs, Output **outputs);
+    void activator_enable(int activator, bool enabled);
+    void activator_activate(int activator, bool activated);
+    void output_enable(int output, bool enabled);
+    void output_activate(int output, bool activated);
 };
