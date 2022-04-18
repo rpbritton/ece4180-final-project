@@ -3,10 +3,13 @@
 bool Outlet::set(bool active)
 {
     this->active = active;
-    if (this->active && this->enabled)
-        *this->pin = 1;
-    else if (!this->active)
-        *this->pin = 0;
+    if (this->enabled)
+    {
+        if (this->active)
+            *this->pin = 1;
+        else
+            *this->pin = 0;
+    }
     return this->active;
 }
 
