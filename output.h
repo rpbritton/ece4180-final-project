@@ -10,7 +10,7 @@ protected:
 
 public:
     Output() : activated(false), enabled(false){};
-    void activate(bool activated);
+    bool activate(bool activated);
     void enable(bool enabled);
     virtual char *description() = 0;
 };

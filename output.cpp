@@ -1,12 +1,13 @@
 #include "output.h"
 
-void Output::activate(bool activated)
+bool Output::activate(bool activated)
 {
-    if (this->enabled)
-    {
-        this->activated = activated;
-        this->set(this->activated);
-    }
+    if (!this->enabled)
+        return false;
+    
+    this->activated = activated;
+    this->set(this->activated);
+    return true;
 }
 
 void Output::enable(bool enabled)

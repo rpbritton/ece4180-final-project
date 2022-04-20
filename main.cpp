@@ -111,7 +111,7 @@ int main()
             state = !state;
 
             //
-            // update input activation
+            // update activator activation
             //
             for (int index = 0; index < num_activators; index++)
             {
@@ -123,8 +123,8 @@ int main()
             //
             for (int index = 0; index < num_outputs; index++)
             {
-                outputs[index]->activate(state);
-                lcd.output_activate(index, state);
+                bool success = outputs[index]->activate(state);
+                lcd.output_activate(index, success && state);
             }
         }
 
