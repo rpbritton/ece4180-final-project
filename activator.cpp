@@ -2,8 +2,10 @@
 
 bool Activator::state()
 {
-    if (this->enabled)
-        return this->read();
+    if (!this->enabled)
+        return false;
+    
+    return this->read();
 }
 
 void Activator::enable(bool enabled)

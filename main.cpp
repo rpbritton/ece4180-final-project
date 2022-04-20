@@ -10,6 +10,7 @@
 #include "servoOut.h"
 #include "outlet.h"
 #include "led.h"
+#include "dipswitch.h"
 
 int main()
 {
@@ -69,35 +70,94 @@ int main()
     uLCD_4DGL lcdLib(p9, p10, p11);
     Lcd lcd(&lcdLib);
     lcd.start(num_activators, activators, num_outputs, outputs);
-
+        
     //
-    // start activators
+    // start and enable all peripherals
     //
-    for (int index = 0; index < num_activators; index++)
-        activators[index]->start();
-
-    //
-    // monitor activator states
-    //
-    bool state = false;
-    bool activator_states[num_activators];
-    for (int index = 0; index < num_activators; index++)
-        activator_states[index] = false;
-
-    // TODO: remove after dipswitch can automatically enable/disable
     for (int index = 0; index < num_activators; index++)
     {
+        activators[index]->start();
         activators[index]->enable(true);
-        lcd.activator_enable(index, true);
+        lcd.activator_enable(activators[index], true);
     }
     for (int index = 0; index < num_outputs; index++)
     {
         outputs[index]->enable(true);
-        lcd.output_enable(index, true);
+        lcd.output_enable(outputs[index], true);
     }
+    
+    //
+    // create dipswitch
+    //
+    Dipswitch dipswitches[8] = {
+        Dipswitch(p12), 
+        Dipswitch(p13), 
+        Dipswitch(p14), 
+        Dipswitch(p17), 
+        Dipswitch(p18), 
+        Dipswitch(p19), 
+        Dipswitch(p20), 
+        Dipswitch(p22)
+    };
+    for (int index = 0; index < 8; index++)
+        dipswitches[index].start();
+    Activator *dipswitchActivators[8] = {
+        &bluetooth,
+        &clapper,
+        &sonarSense,
+        &button,
+        &lightSense,
+        NULL,
+        NULL,
+        NULL
+    };
+    Output *dipswitchOutputs[8] = {
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        &servoOutput,
+        &outlet,
+        &speakerOutput
+    };
+
+    //
+    // monitor activator states
+    //
+    bool lit = false;
+    bool activator_states[num_activators];
+    for (int index = 0; index < num_activators; index++)
+        activator_states[index] = false;
 
     while (1)
     {
+        //
+        // check dipswitches
+        //
+        for (int index = 0; index < 8; index++)
+        {
+            if (!dipswitches[index].changed())
+                continue;
+            
+            bool state = dipswitches[index].read();
+            
+            if (dipswitchActivators[index] != NULL)
+            {
+                dipswitchActivators[index]->enable(state);
+                lcd.activator_enable(dipswitchActivators[index], state);
+            }
+            
+            if (dipswitchOutputs[index] != NULL)
+            {
+                dipswitchOutputs[index]->enable(state);
+                lcd.output_enable(dipswitchOutputs[index], state);
+            }
+        }
+        
+        //
+        // check activators
+        //
         bool changed = false;
         for (int index = 0; index < num_activators; index++)
         {
@@ -106,16 +166,19 @@ int main()
                 changed = true;
         }
 
+        //
+        // state changed, update
+        //
         if (changed)
         {
-            state = !state;
+            lit = !lit;
 
             //
             // update activator activation
             //
             for (int index = 0; index < num_activators; index++)
             {
-                lcd.activator_activate(index, activator_states[index]);
+                lcd.activator_activate(activators[index], activator_states[index]);
             }
 
             //
@@ -123,8 +186,8 @@ int main()
             //
             for (int index = 0; index < num_outputs; index++)
             {
-                bool success = outputs[index]->activate(state);
-                lcd.output_activate(index, success && state);
+                bool active = outputs[index]->activate(lit);
+                lcd.output_activate(outputs[index], active && lit);
             }
         }
 

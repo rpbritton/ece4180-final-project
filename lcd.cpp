@@ -47,6 +47,11 @@ void Lcd::write_state(char column, char row, bool state)
 
 void Lcd::start(int num_activators, Activator **activators, int num_outputs, Output **outputs)
 {
+    this->num_activators = num_activators;
+    this->activators = activators;
+    this->num_outputs = num_outputs;
+    this->outputs = outputs;
+    
     this->lcd->cls();
     this->lcd->background_color(BLACK);
 
@@ -55,34 +60,42 @@ void Lcd::start(int num_activators, Activator **activators, int num_outputs, Out
     this->write_title(current_row, LCD_ACTIVATORS_TITLE);
     current_row += 2;
     this->activators_row = current_row;
-    for (int index = 0; index < num_activators; index++)
-        this->write_description(current_row++, activators[index]->description());
+    for (int index = 0; index < this->num_activators; index++)
+        this->write_description(current_row++, this->activators[index]->description());
 
     current_row += 2;
 
     this->write_title(current_row, LCD_OUTPUTS_TITLE);
     current_row += 2;
     this->outputs_row = current_row;
-    for (int index = 0; index < num_outputs; index++)
-        this->write_description(current_row++, outputs[index]->description());
+    for (int index = 0; index < this->num_outputs; index++)
+        this->write_description(current_row++, this->outputs[index]->description());
 }
 
-void Lcd::activator_enable(int activator, bool enabled)
+void Lcd::activator_enable(Activator *activator, bool enabled)
 {
-    this->write_state(LCD_ENABLE_COLUMN, this->activators_row + activator, enabled);
+    for (int index = 0; index < this->num_activators; index++)
+        if (this->activators[index] == activator)
+            this->write_state(LCD_ENABLE_COLUMN, this->activators_row + index, enabled);
 }
 
-void Lcd::activator_activate(int activator, bool activated)
+void Lcd::activator_activate(Activator *activator, bool activated)
 {
-    this->write_state(LCD_ACTIVATED_COLUMN, this->activators_row + activator, activated);
+    for (int index = 0; index < this->num_activators; index++)
+        if (this->activators[index] == activator)
+            this->write_state(LCD_ACTIVATED_COLUMN, this->activators_row + index, activated);
 }
 
-void Lcd::output_enable(int output, bool enabled)
+void Lcd::output_enable(Output *output, bool enabled)
 {
-    this->write_state(LCD_ENABLE_COLUMN, this->outputs_row + output, enabled);
+    for (int index = 0; index < this->num_outputs; index++)
+        if (this->outputs[index] == output)
+            this->write_state(LCD_ENABLE_COLUMN, this->outputs_row + index, enabled);
 }
 
-void Lcd::output_activate(int output, bool activated)
+void Lcd::output_activate(Output *output, bool activated)
 {
-    this->write_state(LCD_ACTIVATED_COLUMN, this->outputs_row + output, activated);
+    for (int index = 0; index < this->num_outputs; index++)
+        if (this->outputs[index] == output)
+            this->write_state(LCD_ACTIVATED_COLUMN, this->outputs_row + index, activated);
 }
