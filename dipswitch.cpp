@@ -22,5 +22,5 @@ bool Dipswitch::changed()
 
 bool Dipswitch::read()
 {
-    return this->pin == 1;
+    return this->pin == 0;
 }
