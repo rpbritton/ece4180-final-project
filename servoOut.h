@@ -9,12 +9,12 @@ class ServoOut : public Output
 private:
     static char *name;
 
-    Servo *servo;
+    Servo servo;
     
 protected:
     virtual void set(bool state);
 
 public:
-    ServoOut(Servo *servo) : servo(servo) {}
+    ServoOut(PinName pin) : servo(pin) {}
     virtual char *description() { return this->name; }
 };

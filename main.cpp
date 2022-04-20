@@ -17,22 +17,11 @@ int main()
     //
     // create activators
     //
-    PinDetect buttonPin(p30);
-    Button button(&buttonPin);
-
-    Serial bluetoothSerial(p28, p27);
-    Bluetooth bluetooth(&bluetoothSerial);
-
-    AnalogIn clapperPin(p16);
-    Clapper clapper(&clapperPin, 0.01);
-
-    AnalogIn lightsensor(p15);
-    Photoresistor lightSense(&lightsensor);
-
-    DigitalOut trigger(p6);
-    DigitalIn echo(p7);
-    Timer sonar;
-    Sonar sonarSense(&trigger, &echo, &sonar);
+    Button button(p30);
+    Bluetooth bluetooth(p28, p27);
+    Clapper clapper(p16, 0.01);
+    Photoresistor lightSense(p15);
+    Sonar sonarSense(p6, p7);
 
     Activator *activators[] = {
         &button,
@@ -45,17 +34,10 @@ int main()
     //
     // create outputs
     //
-    Servo servo(p21);
-    ServoOut servoOutput(&servo);
-
-    PwmOut speaker(p26);
-    SpeakerOut speakerOutput(&speaker, 440.0, 0.2);
-
-    DigitalOut outletPin(p8);
-    Outlet outlet(&outletPin);
-
-    DigitalOut ledPin(LED1);
-    Led led(&ledPin);
+    ServoOut servoOutput(p21);
+    SpeakerOut speakerOutput(p26, 440.0, 0.2);
+    Outlet outlet(p8);
+    Led led(LED1);
 
     Output *outputs[] = {
         &servoOutput,
@@ -67,8 +49,7 @@ int main()
     //
     // create LCD
     //
-    uLCD_4DGL lcdLib(p9, p10, p11);
-    Lcd lcd(&lcdLib);
+    Lcd lcd(p9, p10, p11);
     lcd.start(num_activators, activators, num_outputs, outputs);
         
     //

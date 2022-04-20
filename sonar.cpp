@@ -4,39 +4,39 @@ char *Sonar::name = "Doorway";
 
 void Sonar::thread_func()
 {
-    this->sonar->reset();
+    this->sonar.reset();
     // measure actual software polling timer delays
     // delay used later in time correction
     // start timer
-    this->sonar->start();
+    this->sonar.start();
     // min software polling delay to read echo pin
-    while (*(this->echo) == 2)
+    while (this->echo == 2)
     {
     };
     // stop timer
-    this->sonar->stop();
+    this->sonar.stop();
     // read timer
-    this->correction = sonar->read_us();
+    this->correction = this->sonar.read_us();
     while (1)
     {
-        *(this->trigger) = 1;
-        this->sonar->reset();
+        this->trigger = 1;
+        this->sonar.reset();
         wait_us(10.0);
-        *(this->trigger) = 0;
+        this->trigger = 0;
         // wait for echo high
-        while (*(this->echo) == 0)
+        while (this->echo == 0)
         {
         };
         // echo high, so start timer
-        this->sonar->start();
+        this->sonar.start();
         // wait for echo low
-        while (*(this->echo) == 1)
+        while (this->echo == 1)
         {
         };
         // stop timer and read value
-        this->sonar->stop();
+        this->sonar.stop();
         // subtract software overhead timer delay and scale to cm
-        int distance = (this->sonar->read_us() - this->correction) / 58.0;
+        int distance = (this->sonar.read_us() - this->correction) / 58.0;
 
         // if previous reading was door open
         if (this->prevReading)

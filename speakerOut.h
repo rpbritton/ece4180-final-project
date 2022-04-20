@@ -8,7 +8,7 @@ class SpeakerOut : public Output
 private:
     static char *name;
 
-    PwmOut *speaker;
+    PwmOut speaker;
 
     float note;
     float duration;
@@ -17,6 +17,6 @@ protected:
     virtual void set(bool state);
 
 public:
-    SpeakerOut(PwmOut *speaker, float note, float duration) : speaker(speaker), note(note), duration(duration) {}
+    SpeakerOut(PinName pin, float note, float duration) : speaker(pin), note(note), duration(duration) {}
     virtual char *description() { return this->name; }
 };

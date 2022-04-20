@@ -11,7 +11,7 @@ class Clapper : public Activator
 private:
     static char *name;
 
-    AnalogIn *pin;
+    AnalogIn pin;
 
     Thread thread;
     void thread_func();
@@ -33,7 +33,7 @@ protected:
     virtual bool read();
 
 public:
-    Clapper(AnalogIn *pin, float threshold) : pin(pin), threshold(threshold), activated(false), current_index(0), next_index(0) {}
+    Clapper(PinName pin, float threshold) : pin(pin), activated(false), threshold(threshold), current_index(0), next_index(0) {}
     virtual void start();
     virtual char *description() { return this->name; }
 };

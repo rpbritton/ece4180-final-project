@@ -9,7 +9,7 @@ class Bluetooth : public Activator
 private:
     static char *name;
 
-    Serial *serial;
+    Serial serial;
 
     Thread thread;
     void thread_func();
@@ -21,7 +21,7 @@ protected:
     virtual bool read();
 
 public:
-    Bluetooth(Serial *serial) : serial(serial), activated(false) {}
+    Bluetooth(PinName tx, PinName rx) : serial(tx, rx), activated(false) {}
     virtual void start();
     virtual char *description() { return this->name; }
 };

@@ -9,7 +9,7 @@ class Photoresistor : public Activator
 private:
     static char *name;
 
-    AnalogIn *sensor;
+    AnalogIn sensor;
 
     Thread thread;
     void thread_func();
@@ -23,7 +23,7 @@ protected:
     virtual bool read();
 
 public:
-    Photoresistor(AnalogIn *sensor) : sensor(sensor), activated(false), prevReading(false) {}
+    Photoresistor(PinName pin) : sensor(pin), activated(false), prevReading(false) {}
     virtual void start();
     virtual char *description() { return this->name; }
 };

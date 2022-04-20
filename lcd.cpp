@@ -11,38 +11,38 @@
 
 void Lcd::write_title(char row, char *title)
 {
-    this->lcd->set_font_size(LCD_FONT_SIZE, LCD_FONT_SIZE);
+    this->lcd.set_font_size(LCD_FONT_SIZE, LCD_FONT_SIZE);
 
-    this->lcd->text_underline(true);
-    this->lcd->locate(LCD_DESCRIPTION_COLUMN, row);
-    this->lcd->puts(title);
+    this->lcd.text_underline(true);
+    this->lcd.locate(LCD_DESCRIPTION_COLUMN, row);
+    this->lcd.puts(title);
 
-    this->lcd->text_underline(true);
-    this->lcd->locate(LCD_ENABLE_COLUMN, row);
-    this->lcd->puts(LCD_ENABLE_TITLE);
+    this->lcd.text_underline(true);
+    this->lcd.locate(LCD_ENABLE_COLUMN, row);
+    this->lcd.puts(LCD_ENABLE_TITLE);
 
-    this->lcd->text_underline(true);
-    this->lcd->locate(LCD_ACTIVATED_COLUMN, row);
-    this->lcd->puts(LCD_ACTIVATED_TITLE);
+    this->lcd.text_underline(true);
+    this->lcd.locate(LCD_ACTIVATED_COLUMN, row);
+    this->lcd.puts(LCD_ACTIVATED_TITLE);
 }
 
 void Lcd::write_description(char row, char *description)
 {
-    this->lcd->set_font_size(LCD_FONT_SIZE, LCD_FONT_SIZE);
-    this->lcd->text_underline(false);
-    this->lcd->locate(LCD_DESCRIPTION_COLUMN, row);
-    this->lcd->puts(description);
+    this->lcd.set_font_size(LCD_FONT_SIZE, LCD_FONT_SIZE);
+    this->lcd.text_underline(false);
+    this->lcd.locate(LCD_DESCRIPTION_COLUMN, row);
+    this->lcd.puts(description);
 }
 
 void Lcd::write_state(char column, char row, bool state)
 {
-    this->lcd->set_font_size(LCD_FONT_SIZE, LCD_FONT_SIZE);
-    this->lcd->text_underline(false);
-    this->lcd->locate(column + 1, row);
+    this->lcd.set_font_size(LCD_FONT_SIZE, LCD_FONT_SIZE);
+    this->lcd.text_underline(false);
+    this->lcd.locate(column + 1, row);
     if (state)
-        this->lcd->putc('x');
+        this->lcd.putc('x');
     else
-        this->lcd->putc(' ');
+        this->lcd.putc(' ');
 }
 
 void Lcd::start(int num_activators, Activator **activators, int num_outputs, Output **outputs)
@@ -52,8 +52,8 @@ void Lcd::start(int num_activators, Activator **activators, int num_outputs, Out
     this->num_outputs = num_outputs;
     this->outputs = outputs;
     
-    this->lcd->cls();
-    this->lcd->background_color(BLACK);
+    this->lcd.cls();
+    this->lcd.background_color(BLACK);
 
     int current_row = 0;
 

@@ -8,7 +8,7 @@
 class Lcd
 {
 private:
-    uLCD_4DGL *lcd;
+    uLCD_4DGL lcd;
 
     void write_title(char row, char *title);
     void write_description(char row, char *description);
@@ -23,7 +23,7 @@ private:
     char outputs_row;
 
 public:
-    Lcd(uLCD_4DGL *lcdLib) : lcd(lcdLib) {};
+    Lcd(PinName tx, PinName rx, PinName rst) : lcd(tx, rx, rst) {};
     void start(int num_activators, Activator **activators, int num_outputs, Output **outputs);
     void activator_enable(Activator *activator, bool enabled);
     void activator_activate(Activator *activator, bool activated);

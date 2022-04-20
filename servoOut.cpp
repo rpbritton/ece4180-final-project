@@ -5,7 +5,7 @@ char *ServoOut::name = "Servo";
 void ServoOut::set(bool state)
 {
     if (state)
-        *this->servo = 0;
+        this->servo = 0;
     else
-        *this->servo = 1;
+        this->servo = 1;
 }

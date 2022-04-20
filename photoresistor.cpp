@@ -4,10 +4,9 @@ char *Photoresistor::name = "Sunlight";
 
 void Photoresistor::thread_func()
 {
-    float sensorReading;
     while (1)
     {
-        sensorReading = *(this->sensor);
+        float sensorReading = this->sensor;
 
         // If light is currently on, check if it needs to be turned off
         if (this->prevReading)

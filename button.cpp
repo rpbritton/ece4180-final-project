@@ -16,7 +16,7 @@ bool Button::read()
 
 void Button::start()
 {
-    this->pin->mode(PullUp);
-    this->pin->attach_deasserted(this, &Button::callback);
-    this->pin->setSampleFrequency();
+    this->pin.mode(PullUp);
+    this->pin.attach_deasserted(this, &Button::callback);
+    this->pin.setSampleFrequency();
 }

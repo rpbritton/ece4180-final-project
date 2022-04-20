@@ -5,7 +5,7 @@ char *Outlet::name = "Outlet";
 void Outlet::set(bool state)
 {
     if (state)
-        *this->pin = 1;
+        this->pin = 1;
     else
-        *this->pin = 0;
+        this->pin = 0;
 }

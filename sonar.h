@@ -9,10 +9,9 @@ class Sonar : public Activator
 private:
     static char *name;
 
-    DigitalOut *trigger;
-    DigitalIn *echo;
-
-    Timer *sonar;
+    DigitalOut trigger;
+    DigitalIn echo;
+    Timer sonar;
 
     Thread thread;
     void thread_func();
@@ -28,7 +27,7 @@ protected:
     virtual bool read();
 
 public:
-    Sonar(DigitalOut *trigger, DigitalIn *echo, Timer *sonar) : trigger(trigger), echo(echo), sonar(sonar), activated(false), prevReading(false) {}
+    Sonar(PinName trigger, PinName echo) : trigger(trigger), echo(echo), activated(false), prevReading(false) {}
     virtual void start();
     virtual char *description() { return this->name; }
 };
